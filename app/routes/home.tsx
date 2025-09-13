@@ -3,8 +3,8 @@ import ConvertorTaxes from "~/convertorTaxes";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Мой налог" },
+    { name: "description", content: "Приложение для подсчёта ваших денюжек после уплаты налога" },
   ];
 }
 
