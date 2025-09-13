@@ -2,7 +2,7 @@
   "name": "React PWA",
   "short_name": "PWA",
   "description": "An application built with React",
-  "start_url": "/test-pwa-react/",
+  "start_url": "/",
   "display": "standalone",
   "icons": [
     {

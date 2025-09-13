@@ -8,7 +8,7 @@
     "dev": "react-router dev",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build/client",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "react-router-serve ./build/client/index.html",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
