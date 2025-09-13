@@ -6,7 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -26,9 +26,21 @@ export const links: Route.LinksFunction = () => [
     rel: "manifest",
     href: "/test-pwa-react/manifest.json",
   },
+  {
+    rel: "apple-touch-icon",
+    href: "/test-pwa-react/pwa-192x192.png",
+  },
+  {
+    rel: "apple-touch-icon",
+    sizes: "512x512",
+    href: "/test-pwa-react/pwa-512x512.png",
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const [showIOSPrompt, setShowIOSPrompt] = useState(false);
+  const iosPromptRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     // Регистрация service worker
     if ("serviceWorker" in navigator) {
@@ -39,6 +51,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
           .catch(console.error);
       }
     }
+
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isInStandalone =
+      "standalone" in window.navigator && (window.navigator as any).standalone;
+
+    if (isIOS && !isInStandalone) {
+      setShowIOSPrompt(true);
+    }
+
     // beforeinstallprompt
     let deferredPrompt: any;
     const handler = (e: Event) => {
@@ -60,8 +81,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
       }
     };
 
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        iosPromptRef.current &&
+        !iosPromptRef.current.contains(e.target as Node)
+      ) {
+        setShowIOSPrompt(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
     window.addEventListener("beforeinstallprompt", handler);
     return () => {
+      document.addEventListener("click", handleClickOutside);
       window.removeEventListener("beforeinstallprompt", handler);
     };
   }, []);
@@ -71,34 +102,60 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
+        <meta name="apple-mobile-web-app-title" content="MyApp" />
+        <meta name="theme-color" content="#0d6efd" />
+
         <Meta />
         <Links />
       </head>
       <body>
         {children}
+
+        {/* Кнопка для Android */}
         <button
           id="install-btn"
           style={{ display: "none" }}
           className="
-    fixed
-    bottom-6
-    left-1/2
-    transform -translate-x-1/2
-    bg-blue-600
-    hover:bg-blue-700
-    text-white
-    font-semibold
-    py-3
-    px-6
-    rounded-xl
-    shadow-lg
-    transition
-    duration-300
-    z-50
-  "
+            fixed top-6 left-1/2 -translate-x-1/2
+            bg-blue-600 hover:bg-blue-700
+            text-white font-semibold py-3 px-6
+            rounded-xl shadow-lg
+            transition duration-300 z-50
+          "
         >
           Установить приложение PWA
         </button>
+
+        {/* Подсказка для iOS */}
+        {showIOSPrompt && (
+          <div
+            ref={iosPromptRef}
+            className="
+              fixed top-6 left-1/2 -translate-x-1/2
+              bg-white text-gray-800
+              border border-gray-300
+              shadow-lg rounded-xl
+              p-4 max-w-xs text-center
+              z-50
+            "
+          >
+            <p className="text-sm font-medium">Чтобы установить приложение:</p>
+            <ol className="text-sm mt-2 text-left list-decimal list-inside">
+              <li>
+                Нажмите <span className="font-semibold">Share</span> (иконка ↑).
+              </li>
+              <li>
+                Выберите{" "}
+                <span className="font-semibold">Add to Home Screen</span>.
+              </li>
+            </ol>
+          </div>
+        )}
 
         <ScrollRestoration />
         <Scripts />
