@@ -110,7 +110,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <>
-      <header>My App</header>
       <Suspense fallback={<div>Loading...</div>}>
         <Outlet />
       </Suspense>
