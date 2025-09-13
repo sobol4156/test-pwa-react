@@ -1,0 +1,35 @@
+{
+  "name": "React PWA",
+  "short_name": "PWA",
+  "description": "An application built with React",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/test-pwa/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/test-pwa/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/test-pwa/screenshot-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile view"
+    },
+    {
+      "src": "/test-pwa/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Desktop view"
+    }
+  ]
+}
