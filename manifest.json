@@ -3,7 +3,9 @@
   "short_name": "PWA",
   "description": "An application built with React",
   "start_url": "/test-pwa-react/",
+  "scope": "/test-pwa-react/",
   "display": "standalone",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "/test-pwa-react/pwa-192x192.png",
