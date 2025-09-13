@@ -1,7 +1,7 @@
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open("v1").then((cache) =>
-      cache.addAll(["/", "/index.html"])
+      cache.addAll(["/test-pwa-react/", "/index.html"])
     )
   );
 });
