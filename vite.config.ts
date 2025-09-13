@@ -4,5 +4,6 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  base: "/test-pwa-react/",
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
 });
